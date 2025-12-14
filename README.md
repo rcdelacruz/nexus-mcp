@@ -29,33 +29,41 @@ Nexus doesn't just dump HTML into your context window. It parses content based o
 *   Python 3.10+
 *   [`uv`](https://github.com/astral-sh/uv) (Recommended) or `pip`
 
-### Quick Install
+### Quick Install (Recommended)
 
-1. Clone or download this repository:
+**Install directly from GitHub - no cloning needed:**
+
+```bash
+# Using uvx (no installation, runs on-demand)
+uvx --from git+https://github.com/rcdelacruz/nexus-mcp.git nexus-mcp
+
+# Or install with pip
+pip install git+https://github.com/rcdelacruz/nexus-mcp.git
+```
+
+### Development Install
+
+**For local development or contributing:**
+
+1. Clone the repository:
 ```bash
 git clone https://github.com/rcdelacruz/nexus-mcp.git
 cd nexus-mcp
 ```
 
-2. Install using pip (with virtual environment recommended):
+2. Install in development mode:
 ```bash
 # Create virtual environment
 python3 -m venv .venv
 source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
-# Install the package
+# Install the package in editable mode
 pip install -e .
 ```
 
-3. For development (includes testing tools):
+3. For development with testing tools:
 ```bash
 pip install -e ".[dev]"
-```
-
-### Manual Installation
-If installing dependencies manually:
-```bash
-pip install mcp httpx beautifulsoup4 ddgs
 ```
 
 ---
@@ -64,7 +72,19 @@ pip install mcp httpx beautifulsoup4 ddgs
 
 ### Claude Code (CLI)
 
-**Quick Setup:**
+**Quick Setup (Recommended - Install from GitHub):**
+```bash
+# Add the server globally (available in all projects)
+claude mcp add nexus --scope user -- \
+  uvx --from git+https://github.com/rcdelacruz/nexus-mcp.git nexus-mcp
+
+# Verify installation
+claude mcp list        # Should show: ✓ Connected
+```
+
+**Alternative: Local Development Setup**
+
+If you cloned the repository for development:
 ```bash
 # Navigate to nexus-mcp directory
 cd /path/to/nexus-mcp
@@ -74,51 +94,24 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e .
 
-# Add the server to Claude Code
-claude mcp add --transport stdio nexus --scope project -- \
+# Add the server to Claude Code (project scope)
+claude mcp add nexus --scope project -- \
   $(pwd)/.venv/bin/python $(pwd)/nexus_server.py
 
 # Verify installation
 claude mcp list
 ```
 
-This creates `.mcp.json` in your project:
-```json
-{
-  "mcpServers": {
-    "nexus": {
-      "type": "stdio",
-      "command": "/absolute/path/to/nexus-mcp/.venv/bin/python",
-      "args": ["/absolute/path/to/nexus-mcp/nexus_server.py"]
-    }
-  }
-}
-```
-
-**For portability, use environment variables:**
-Edit `.mcp.json` manually:
-```json
-{
-  "mcpServers": {
-    "nexus": {
-      "type": "stdio",
-      "command": "${PWD}/.venv/bin/python",
-      "args": ["${PWD}/nexus_server.py"]
-    }
-  }
-}
-```
+**Configuration Scopes:**
+- `--scope user` - Available across all projects (recommended for GitHub install)
+- `--scope project` - Creates `.mcp.json` (shareable via git)
+- `--scope local` - Personal config in `~/.claude.json`
 
 **Check server status:**
 ```bash
-claude mcp list        # Should show: ✓ Connected
+claude mcp list        # Should show: nexus - ✓ Connected
 /mcp                   # In conversation: shows available tools
 ```
-
-**Scopes:**
-- `--scope project` - Creates `.mcp.json` (shareable via git)
-- `--scope local` - Personal config in `~/.claude.json`
-- `--scope user` - Available across all projects
 
 ---
 
@@ -128,26 +121,38 @@ claude mcp list        # Should show: ✓ Connected
 *   **MacOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 *   **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-**Using uv (recommended):**
+**Recommended: Install from GitHub with uvx**
 ```json
 {
   "mcpServers": {
     "nexus": {
-      "command": "uv",
+      "command": "uvx",
       "args": [
-        "run",
-        "--with", "mcp",
-        "--with", "httpx",
-        "--with", "beautifulsoup4",
-        "--with", "ddgs",
-        "/ABSOLUTE/PATH/TO/YOUR/nexus_server.py"
+        "--from",
+        "git+https://github.com/rcdelacruz/nexus-mcp.git",
+        "nexus-mcp"
       ]
     }
   }
 }
 ```
 
-**Using virtual environment:**
+**Alternative: Using local installation**
+
+After running `pip install git+https://github.com/rcdelacruz/nexus-mcp.git`:
+```json
+{
+  "mcpServers": {
+    "nexus": {
+      "command": "nexus-mcp"
+    }
+  }
+}
+```
+
+**For local development:**
+
+If you cloned the repo and installed with `pip install -e .`:
 ```json
 {
   "mcpServers": {
@@ -159,7 +164,7 @@ claude mcp list        # Should show: ✓ Connected
 }
 ```
 
-*Replace `/ABSOLUTE/PATH/TO/YOUR/` with the actual path.*
+*Replace `/ABSOLUTE/PATH/TO/` with the actual path to your clone.*
 
 ---
 
