@@ -3,7 +3,7 @@ name = "nexus-mcp"
 version = "1.0.0"
 description = "A hybrid search & retrieval MCP server combining web search and intelligent content extraction"
 authors = [
-    {name = "Your Name", email = "your.email@example.com"}
+    {name = "Ronald dela Cruz", email = "rcdelacruz@users.noreply.github.com"}
 ]
 readme = "README.md"
 license = {text = "MIT"}
@@ -19,9 +19,9 @@ dependencies = [
 nexus-mcp = "nexus_server:main"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/nexus-mcp"
-Repository = "https://github.com/yourusername/nexus-mcp"
-Issues = "https://github.com/yourusername/nexus-mcp/issues"
+Homepage = "https://github.com/rcdelacruz/nexus-mcp"
+Repository = "https://github.com/rcdelacruz/nexus-mcp"
+Issues = "https://github.com/rcdelacruz/nexus-mcp/issues"
 
 [project.optional-dependencies]
 dev = [
