@@ -27,18 +27,30 @@ Nexus doesn't just dump HTML into your context window. It parses content based o
 
 ### Prerequisites
 *   Python 3.10+
-*   [`uv`](https://github.com/astral-sh/uv) (Recommended) or `pip`
 
-### Quick Install (Recommended)
+### Quick Install
 
-**Install directly from GitHub - no cloning needed:**
+**Option 1: Using pip (Simplest - Works Everywhere)**
 
 ```bash
-# Using uvx (no installation, runs on-demand)
-uvx --from git+https://github.com/rcdelacruz/nexus-mcp.git nexus-mcp
-
-# Or install with pip
+# Install directly from GitHub
 pip install git+https://github.com/rcdelacruz/nexus-mcp.git
+```
+
+**Option 2: Using uvx (Faster, Isolated)**
+
+First install `uv` if you don't have it:
+```bash
+# On macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# On Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+Then use uvx (no separate installation needed):
+```bash
+uvx --from git+https://github.com/rcdelacruz/nexus-mcp.git nexus-mcp
 ```
 
 ### Development Install
@@ -72,17 +84,32 @@ pip install -e ".[dev]"
 
 ### Claude Code (CLI)
 
-**Quick Setup (Recommended - Install from GitHub):**
+**Option 1: Using pip (Simplest)**
+
+```bash
+# First install the package
+pip install git+https://github.com/rcdelacruz/nexus-mcp.git
+
+# Add the server globally (available in all projects)
+claude mcp add nexus --transport stdio --scope user -- nexus-mcp
+
+# Verify installation
+claude mcp list        # Should show: ✓ Connected
+```
+
+**Option 2: Using uvx (Requires uv installation)**
+
+Make sure you have `uv` installed first (see Installation section above), then:
 ```bash
 # Add the server globally (available in all projects)
-claude mcp add nexus --scope user -- \
+claude mcp add nexus --transport stdio --scope user -- \
   uvx --from git+https://github.com/rcdelacruz/nexus-mcp.git nexus-mcp
 
 # Verify installation
 claude mcp list        # Should show: ✓ Connected
 ```
 
-**Alternative: Local Development Setup**
+**Option 3: Local Development Setup**
 
 If you cloned the repository for development:
 ```bash
@@ -121,7 +148,24 @@ claude mcp list        # Should show: nexus - ✓ Connected
 *   **MacOS:** `~/Library/Application Support/Claude/claude_desktop_config.json`
 *   **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-**Recommended: Install from GitHub with uvx**
+**Option 1: Using pip (Simplest)**
+
+First install: `pip install git+https://github.com/rcdelacruz/nexus-mcp.git`
+
+Then add to config:
+```json
+{
+  "mcpServers": {
+    "nexus": {
+      "command": "nexus-mcp"
+    }
+  }
+}
+```
+
+**Option 2: Using uvx (Requires uv installed)**
+
+Make sure `uv` is installed first (see Installation section), then add to config:
 ```json
 {
   "mcpServers": {
@@ -132,19 +176,6 @@ claude mcp list        # Should show: nexus - ✓ Connected
         "git+https://github.com/rcdelacruz/nexus-mcp.git",
         "nexus-mcp"
       ]
-    }
-  }
-}
-```
-
-**Alternative: Using local installation**
-
-After running `pip install git+https://github.com/rcdelacruz/nexus-mcp.git`:
-```json
-{
-  "mcpServers": {
-    "nexus": {
-      "command": "nexus-mcp"
     }
   }
 }
